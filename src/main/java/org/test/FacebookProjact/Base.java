@@ -14,14 +14,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Base {
-
-	public static void getData(int rowNum, String columnName) throws Throwable {
+	public static void main(String[] args) throws Throwable {
+		String data = getData(2, "id");
+		System.out.println(data);
+	}
+	public static String getData(int rowNum, String columnName) throws Throwable {
 		List<LinkedHashMap<String, String>> mapDatasList = new ArrayList<LinkedHashMap<String, String>>();
 		File excelLocaltion = new File(
 				"C:\\Users\\DELL\\eclipse-workspace\\HexawareBatch1567\\FacebookProjact\\TestData\\Result.xlsx");
-
 		String sheetName = "Datas";
-
 		FileInputStream f = new FileInputStream(excelLocaltion);
 		Workbook w = new XSSFWorkbook(f);
 		Sheet sheet = w.getSheet(sheetName);
@@ -29,6 +30,7 @@ public class Base {
 		for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
 			Row currentRow = sheet.getRow(i);
 			LinkedHashMap<String, String> mapDatas = new LinkedHashMap<String, String>();
+
 			for (int j = 0; j < headerRow.getPhysicalNumberOfCells(); j++) {
 				Cell currentCell = currentRow.getCell(j);
 				int type = currentCell.getCellType();
@@ -39,13 +41,14 @@ public class Base {
 					double d = currentCell.getNumericCellValue();
 					long l = (long) d;
 					mapDatas.put(headerRow.getCell(j).getStringCellValue(), String.valueOf(l));
-
 				}
 			}
 
 			mapDatasList.add(mapDatas);
 		}
+		return mapDatasList.get(rowNum).get(columnName);
 
 	}
 
 }
+
